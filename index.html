@@ -5,6 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>우리 둘만의 공간</title>
   <style>
+    .lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top left, rgba(244,191,210,0.28), transparent 22%),
+    radial-gradient(circle at top right, rgba(184,207,250,0.22), transparent 18%),
+    linear-gradient(180deg, #faf6ef 0%, #fffaf8 100%);
+}
+
+.lock-card {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(255, 252, 249, 0.96);
+  border: 2px solid rgba(255,255,255,0.7);
+  box-shadow: 0 10px 30px rgba(118, 88, 88, 0.08);
+  border-radius: 32px;
+  padding: 28px;
+  text-align: center;
+}
+
+.lock-card h2 {
+  margin-bottom: 10px;
+}
+
+.lock-card p {
+  color: #7a706c;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.lock-emoji {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.lock-input {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.lock-error {
+  min-height: 22px;
+  font-size: 14px;
+  color: #d45b74;
+  margin-top: 8px;
+}
+
+.hidden-app {
+  display: none;
+}
     :root {
       --bg: #fbf7f2;
       --paper: rgba(255, 252, 249, 0.92);
@@ -441,8 +497,18 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="floating f1">♡</div>
+
+  <div class="lock-screen" id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-emoji">🔒</div>
+    <h2>우리 둘만의 공간</h2>
+    <p>비밀번호를 입력해줘 ✿</p>
+    <input class="lock-input" id="passwordInput" type="password" placeholder="비밀번호 입력" />
+    <button id="unlockBtn" type="button">들어가기</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+    <div class="wrap hidden-app" id="appWrap">    <div class="floating f1">♡</div>
     <div class="floating f2">✿</div>
     <div class="floating f3">☁</div>
     <div class="floating f4">★</div>
@@ -592,6 +658,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SITE_PASSWORD = 'myunghyun';
+    const SESSION_KEY = 'our-little-space-unlocked';
     const SUPABASE_URL = 'https://veeyvxfzzweqkvvemgiz.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_6DQwvtJEICrWX06RC7S_jA_J0bEKIEk';
 
@@ -645,7 +713,27 @@
       addMessageBtn: document.getElementById('addMessageBtn'),
       sharedMessagesList: document.getElementById('sharedMessagesList')
     };
+els.lockScreen = document.getElementById('lockScreen');
+els.appWrap = document.getElementById('appWrap');
+els.passwordInput = document.getElementById('passwordInput');
+els.unlockBtn = document.getElementById('unlockBtn');
+els.lockError = document.getElementById('lockError');
 
+function unlockSite() {
+  els.lockScreen.style.display = 'none';
+  els.appWrap.style.display = 'block';
+  localStorage.setItem(SESSION_KEY, 'yes');
+}
+
+function tryUnlock() {
+  const value = els.passwordInput.value.trim();
+  if (value === SITE_PASSWORD) {
+    els.lockError.textContent = '';
+    unlockSite();
+  } else {
+    els.lockError.textContent = '비밀번호가 맞지 않아. 다시 입력해줘 ♡';
+  }
+}
     let localState = {
       you: '장채림',
       partner: '최명현',
@@ -683,7 +771,16 @@
         els.setupStatus.textContent = message;
       }
     }
+els.unlockBtn.addEventListener('click', tryUnlock);
+els.passwordInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    tryUnlock();
+  }
+});
 
+if (localStorage.getItem(SESSION_KEY) === 'yes') {
+  unlockSite();
+}
     function loadLocalState() {
       const saved = loadJson(LOCAL_SETTINGS_KEY, null);
       if (saved) {
