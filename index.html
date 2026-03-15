@@ -659,7 +659,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SITE_PASSWORD = 'myunghyun';
-    const SESSION_KEY = 'our-little-space-unlocked';
     const SUPABASE_URL = 'https://veeyvxfzzweqkvvemgiz.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_6DQwvtJEICrWX06RC7S_jA_J0bEKIEk';
 
@@ -722,7 +721,6 @@ els.lockError = document.getElementById('lockError');
 function unlockSite() {
   els.lockScreen.style.display = 'none';
   els.appWrap.style.display = 'block';
-  localStorage.setItem(SESSION_KEY, 'yes');
 }
 
 function tryUnlock() {
@@ -778,9 +776,6 @@ els.passwordInput.addEventListener('keydown', (event) => {
   }
 });
 
-if (localStorage.getItem(SESSION_KEY) === 'yes') {
-  unlockSite();
-}
     function loadLocalState() {
       const saved = loadJson(LOCAL_SETTINGS_KEY, null);
       if (saved) {
