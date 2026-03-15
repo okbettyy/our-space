@@ -502,7 +502,7 @@
   <div class="lock-card">
     <div class="lock-emoji">🔒</div>
     <h2>우리 둘만의 공간</h2>
-    <p>비밀번호를 입력해줘 ✿</p>
+    <p>비밀번호를 입력해줘</p>
     <input class="lock-input" id="passwordInput" type="password" placeholder="비밀번호 입력" />
     <button id="unlockBtn" type="button">들어가기</button>
     <div class="lock-error" id="lockError"></div>
@@ -512,6 +512,8 @@
     <div class="floating f2">✿</div>
     <div class="floating f3">☁</div>
     <div class="floating f4">★</div>
+
+    
 
     <section class="hero">
       <div class="hero-grid">
@@ -529,7 +531,7 @@
 
         <div class="hero-side">
           <div class="mini-card">
-            <div class="section-label">우리 ♡</div>
+            <div class="section-label">♡</div>
             <div class="avatar-row">
               <div class="avatar">
                 <div class="doodle-face">૮ ˶ᵔ ᵕ ᵔ˶ ა</div>
@@ -546,7 +548,7 @@
           </div>
 
           <div class="mini-card">
-            <div class="section-label">처음 연락한 날부터 ✷</div>
+            <div class="section-label">처음 연락한 날부터</div>
             <h2 style="margin-bottom:6px;" id="daysTogether">처음 연락한 지 0일</h2>
             <p style="margin-bottom:0;">우리가 처음 연락을 시작한 날부터 차곡차곡 쌓인 시간들이야.</p>
           </div>
@@ -910,7 +912,7 @@ els.passwordInput.addEventListener('keydown', (event) => {
 
       sharedIdeas = data || [];
       renderIdeas();
-      setStatus('연결됨. 데이트 아이디어와 메모가 공유돼요.');
+      setStatus('API 연결됨.');
     }
 
     async function loadSharedMessages() {
@@ -1025,7 +1027,7 @@ els.passwordInput.addEventListener('keydown', (event) => {
       }
 
       const randomIndex = Math.floor(Math.random() * sharedIdeas.length);
-      els.pickedIdea.textContent = '오늘의 추천 데이트: ' + sharedIdeas[randomIndex].idea_text + ' ✿';
+      els.pickedIdea.textContent = '오늘의 추천 데이트: ' + sharedIdeas[randomIndex].idea_text;
     }
 
     els.saveBtn.addEventListener('click', () => {
